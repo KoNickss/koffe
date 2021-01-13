@@ -6,4 +6,11 @@ wget https://raw.githubusercontent.com/KoNickss/koffe/main/make_iso -P /usr/bin/
 chmod +x /usr/bin/make_iso
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/register2 -P /usr/bin/
 chmod +x /usr/bin/register2
-config
+mkdir /arch
+mkdir /iso
+mkdir/arch/temp
+mkdir /arch/scripts
+mkdir /arch/pkgs
+wget https://raw.githubusercontent.com/KoNickss/koffe/main/koffe.is -P /arch/scripts/
+wget https://raw.githubusercontent.com/KoNickss/koffe/main/pi.is -P /arch/scripts/
+wget https://raw.githubusercontent.com/KoNickss/koffe/main/install -P /arch/scripts/

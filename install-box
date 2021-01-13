@@ -1,7 +1,7 @@
 pacman-key --init
 pacman-key --populate archlinux
 pacman-key --refresh-keys
-pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano base
+pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano gzip
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/.bashrc -P ~/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pkgdown -P /usr/bin/
 chmod +x /usr/bin/pkgdown

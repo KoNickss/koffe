@@ -1,4 +1,4 @@
-# koffe [NOT FUNCTIONAL YET]
+# koffe
 koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copy-pasting from the iso that could cause issues later.
 # Documentation
 ## Installation
@@ -7,7 +7,8 @@ First of all, open a terminal and run this command:
 This creates some configs and add some file we will need for the installation.
 After the script finishes, from the archlinux website go to a mirror near you and download the .tar.gz bootstrap image and unzip it in `/usr/share/koffe/archbox` so that `/usr/share/koffe/archbox/bin` is a valid folder.
 After you're done unziping the image, edit `/usr/share/koffe/archbox/etc/pacman.d/mirrorlist` and uncomment a mirror. Then you should be able to run `koffe-shell` to enter the container, after that run 
-### `curl https://koffe.netlify.app/install-box | bash` and `pacman -Syu` to add the necessary files. After that just exit and re-enter the container and you should be able to use it.
+### `curl https://koffe.netlify.app/install-box | bash`
+and `pacman -Syu` to add the necessary files. After that just exit and re-enter the container and you should be able to use it.
 ## Usage
 After you do `koffe-shell` to enter the container, you can do `help-koffe` to list commands, I'm gonna list the steps of making a basic iso.
 ### 1.Register the packages (you only have to do this once)

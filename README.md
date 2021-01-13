@@ -10,7 +10,7 @@ After you're done unziping the image, edit `/usr/share/koffe/archbox/etc/pacman.
 ### `curl https://koffe.netlify.app/install-box | bash`
 and `pacman -Syu` to add the necessary files. After that just exit and re-enter the container and you should be able to use it.
 ## Usage
-After you do `koffe-shell` to enter the container, you can do `help-koffe` to list commands, I'm gonna list the steps of making a basic iso.
+After you do `koffe-shell` to enter the container, you can do `helpme` to list commands, I'm gonna list the steps of making a basic iso.
 ### 1.Register the packages (you only have to do this once)
 To do that, use the command `register package-name`
 #### !!IMPORTANT!! : you need these following packages for even the most basic of installs: base, linux, linux-firmware, libnewt (for the script) and grub, register them before any other packages.

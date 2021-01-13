@@ -1,4 +1,5 @@
 pacman-key --init
+pacman-key --populate archlinux
 pacman-key --refresh-keys
 pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/.bashrc -P ~/

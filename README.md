@@ -1,4 +1,4 @@
-# koffe
+# koffe [NOT FUNCTIONAL YET]
 koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copy-pasting from the iso that could cause issues later.
 # Documentation
 ## Installation

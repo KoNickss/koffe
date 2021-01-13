@@ -5,8 +5,6 @@ pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano gzip
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/.bashrc -P ~/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pkgdown -P /usr/bin/
 chmod +x /usr/bin/pkgdown
-wget https://raw.githubusercontent.com/KoNickss/koffe/main/make_iso -P /usr/bin/
-chmod +x /usr/bin/make_iso
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/register2 -P /usr/bin/
 chmod +x /usr/bin/register2
 mkdir /arch

@@ -1,0 +1,4 @@
+#!/bin/bash
+pactree -s -u $2 > /tmp/temporary22
+pacman -Sp --noconfirm - < /tmp/temporary22 > /arch/pkgs/$1/$2
+echo $2

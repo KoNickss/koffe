@@ -1,0 +1,24 @@
+#!/bin/bash
+declare -a programs
+ls /arch/pkgs > /tmp/temporary33
+echo done >> /tmp/temporary33
+sed -e 's/$/ +/' -i /tmp/temporary33
+programs=(`cat /tmp/temporary33`)
+pswap=$(whiptail --title "Select package to add to iso" --menu "Select package to add to iso" 16 78 10 "${programs[@]}" 3>&1 1>&2 2>&3 3>&-)
+if [ $pswap != done ];
+then
+if [ $(file /arch/pkgs/$pswap | cut -f 2 -d ' ') == directory ];
+then
+echo d
+cat /arch/pkgs/$pswap/* > /tmp/tgl
+ls /arch/pkgs/$pswap/ >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+wget -nc -i /tmp/tgl -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+fi
+if [ $(file /arch/pkgs/$pswap | cut -f 2 -d ' ') != directory ];
+then
+echo f
+echo $pswap >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+wget -nc -i /arch/pkgs/$pswap -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+fi
+pkgdown
+fi

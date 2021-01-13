@@ -1,5 +1,5 @@
 #!/bin/bash
-mount --bind /usr/share/koffe/archbox /usr/share/koffe/archbox
+mount --bind /usr/share/koffe/archbox/ /usr/share/koffe/archbox/
 shopt -s extglob
 
 # generated from util-linux source: libmount/src/utils.c

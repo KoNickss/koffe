@@ -1,3 +1,4 @@
+pacman-key --init
 pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/.bashrc -P ~/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pkgdown -P /usr/bin/

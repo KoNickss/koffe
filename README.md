@@ -15,7 +15,7 @@ To do that, use the command `register package-name`
 If you package is a group (like gnome, xorg, plasma) do register-g instead of register.
 TIP: To make package groups, simply make a folder in /arch/pkgs and move all packages you want to put in said group in that folder, afther that when you select the folder it'll fetch everything in it.
 ### 2. Make the iso
-Run `make_iso`, you will be prompted with a screen where you can choose what packages (from the registered ones) to download for the installation, once again you need the packages listed in step 1 for even the most basic installs, so add them for a healthy install. After you're done choosing the packages and downloading them, choose the "done" option at the very bottom and let the iso generate.
+Run `iso-make`, you will be prompted with a screen where you can choose what packages (from the registered ones) to download for the installation, once again you need the packages listed in step 1 for even the most basic installs, so add them for a healthy install. After you're done choosing the packages and downloading them, choose the "done" option at the very bottom and let the iso generate.
 ### 3. Collect and use the iso
 The iso will be copied from the container to the home folder after you run `exit`, pick it up from there and use it, you can flash it to a usb, burn it to a disk or mount it to a virtual machine.
 ### 4. Installing

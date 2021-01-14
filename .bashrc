@@ -4,6 +4,7 @@ helpme(){
 	echo "'register-g group-name' - to register group"
 	echo "'list' - to list registered packages"
 	echo "'iso-make' - to build iso"
+	echo "'reregister' - to rebuild the registration file for every package'"
 }
 register(){
 	rm -rf /var/cache/pacman/pkg/*
@@ -25,6 +26,7 @@ iso-make(){
 	touch /usr/share/archiso/configs/releng/airootfs/root/install.list
 	rm -rf /usr/share/archiso/configs/releng/airootfs/root/*
 	rm -rf /iso/*
+	reregister
 	pkgdown
 	cp -r /arch/scripts/* /usr/share/archiso/configs/releng/airootfs/root/
 	mkarchiso -v -w /iso -o /out /usr/share/archiso/configs/releng

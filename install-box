@@ -15,3 +15,5 @@ mkdir /arch/pkgs
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/koffe.is -P /arch/scripts/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pi.is -P /arch/scripts/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/install -P /arch/scripts/
+wget https://raw.githubusercontent.com/KoNickss/koffe/main/reregister -P /usr/bin/
+chmod +x /usr/bin/reregister

@@ -1,0 +1,16 @@
+#!/bin/bash
+cat ~/.bashrc > /tmp/rereg
+for file in $(ls /arch/pkgs/)
+do
+	if [ $(file /arch/pkgs/$file | cut -f 2 -d ' ') == directory ];
+	then
+		echo register-g $file >> /tmp/rereg
+	fi
+	
+	if [ $(file /arch/pkgs/$file | cut -f 2 -d ' ') != directory ];
+	then
+		echo register $file >> /tmp/rereg
+	fi
+done
+bash /tmp/rereg
+		

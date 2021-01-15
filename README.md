@@ -25,9 +25,9 @@ Boot from the iso and run `bash install` in the live env, this should start the 
 In cfdisk you need at least one partition with the type set as "linux", you can also add one with a "swap" label as long as it is about 1.5 times as big as your ram storage (but this is optional), if you're on uefi create a 500 MB fat32 partition and if you're on mbr/legacy tick the 'bootable' option for the linux partition. Make sure to memorise or write down what partiton (/dev/name) is used for what as you will need to fill that in later.
 ### Tips for advanced users:
 You can edit /arch/scripts/ to better suit your installation, koffe.is is what runs in the live env and pi.is is the post-install setup that runs in chroot.
-### Upgrading
+## Upgrading
 To update the scripts and components in the arch container, simply enter it and run `curl https://koffe.netlify.app/install-box | bash`. Basically redownload everything fresh off the webapp, same for the host, just replace `install-box` with `install-host` and add a sudo before bash if necessary.
-### Removal
+## Removal
 To remove koffe from your system, simply delete `/usr/bin/koffe-shell` and everything in `/usr/share/koffe/`
 ## End of documentation
 As an ending thought, I really hope this tool will help speed up your arch installs or make it more aproachable if you're just starting out. Also, make sure to re-build your isos regularly to get the latest software, though running `pacman -Syu` after installation should do the same, it's less clunky this way.

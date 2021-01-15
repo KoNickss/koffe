@@ -18,10 +18,16 @@ If the package is actually a group (like gnome, xorg, plasma) do register-g inst
 TIP: To make package groups, simply make a folder in /arch/pkgs and move all packages you want to put in said group in that folder, after that when you select the folder it'll fetch everything in it.
 ### 2. Making the iso
 Run `iso-make`, you will be prompted with a screen where you can choose what packages (from the registered ones) to download for the installation, once again you need the packages listed in step 1 for even the most basic installs, so add them for a healthy install. After you're done choosing the packages and downloading them, choose the "done" option at the very bottom and let the iso generate.
-### 3. Collect and use the iso
+### 3. Collecting and using the iso
 The iso will be copied from the container to the home folder after you run `exit`, pick it up from there and use it, you can flash it to a usb, burn it to a disk or mount it to a virtual machine.
 ### 4. Installing
 Boot from the iso and run `bash install` in the live env, this should start the installer right away, just follow the steps keeping these things in mind:
 In cfdisk you need at least one partition with the type set as "linux", you can also add one with a "swap" label as long as it is about 1.5 times as big as your ram storage (but this is optional), if you're on uefi create a 500 MB fat32 partition and if you're on mbr/legacy tick the 'bootable' option for the linux partition. Make sure to memorise or write down what partiton (/dev/name) is used for what as you will need to fill that in later.
 ### Tips for advanced users:
 You can edit /arch/scripts/ to better suit your installation, koffe.is is what runs in the live env and pi.is is the post-install setup that runs in chroot.
+### Upgrading
+To update the scripts and components in the arch container, simply enter it and run `curl https://koffe.netlify.app/install-box | bash`. Basically redownload everything fresh off the webapp, same for the host, just replace `install-box` with `install-host` and add a sudo before bash if necessary.
+### Removal
+To remove koffe from your system, simply delete `/usr/bin/koffe-shell` and everything in `/usr/share/koffe/`
+## End of documentation
+As an ending thought, I really hope this tool will help speed up your arch installs or make it more aproachable if you're just starting out. Also, make sure to re-build your isos regularly to get the latest software, though running `pacman -Syu` after installation should do the same, it's less clunky this way.

@@ -1,5 +1,8 @@
+mkdir /usr/share/koffe
+rm /usr/share/koffe/arch-chroot
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/arch-chroot -P /usr/share/koffe/
 chmod +x /usr/share/koffe/arch-chroot
+rm /usr/bin/koffe-shell
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/koffe-shell -P /usr/bin/
 chmod +x /usr/bin/koffe-shell
 mkdir /usr/share/koffe/archbox

@@ -4,8 +4,8 @@ koffe is a great tool for making intuitive, offline archlinux installers. Since 
 ## Installation
 First of all, open a terminal and run this command:
 ### `curl https://koffe.netlify.app/install-host | sudo bash`
-This creates some configs and add some file we will need for the installation.
-After the script finishes, from the archlinux website go to a mirror near you and download the .tar.gz bootstrap image and unzip it in `/usr/share/koffe/archbox` so that `/usr/share/koffe/archbox/bin` is a valid folder.
+This creates some configs and adds some file we will need for the installation.
+After the script finishes, go to a mirror near you on the arch website and download the .tar.gz bootstrap image and unzip it in `/usr/share/koffe/archbox` so that `/usr/share/koffe/archbox/bin` is a valid folder.
 After you're done unziping the image, edit `/usr/share/koffe/archbox/etc/pacman.d/mirrorlist` and uncomment a mirror. Then you should be able to run `koffe-shell` to enter the container, after that run 
 ### `curl https://koffe.netlify.app/install-box | bash`
 and `pacman -Syu` to add the necessary files. After that just exit and re-enter the container and you should be able to use it.
@@ -19,7 +19,7 @@ TIP: To make package groups, simply make a folder in /arch/pkgs and move all pac
 ### 2. Making the iso
 Run `iso-make`, you will be prompted with a screen where you can choose what packages (from the registered ones) to download for the installation, once again you need the packages listed in step 1 for even the most basic installs, so add them for a healthy install. After you're done choosing the packages and downloading them, choose the "done" option at the very bottom and let the iso generate.
 ### 3. Collecting and using the iso
-The iso will be copied from the container to the home folder after you run `exit`, pick it up from there and use it, you can flash it to a usb, burn it to a disk or mount it to a virtual machine.
+The iso will be copied from the container to the home folder after you run `exit`, pick it up from there and use it, you can flash it to a usb, burn it to a disk or mount it to a virtual machine. If for some reason it doesn't appear in your home, it's in `/usr/share/koffe/archbox/out` most likely.
 ### 4. Installing
 Boot from the iso and run `bash install` in the live env, this should start the installer right away, just follow the steps keeping these things in mind:
 In cfdisk you need at least one partition with the type set as "linux", you can also add one with a "swap" label as long as it is about 1.5 times as big as your ram storage (but this is optional), if you're on uefi create a 500 MB fat32 partition and if you're on mbr/legacy tick the 'bootable' option for the linux partition. Make sure to memorise or write down what partiton (/dev/name) is used for what as you will need to fill that in later.

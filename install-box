@@ -2,9 +2,12 @@ pacman-key --init
 pacman-key --populate archlinux
 pacman-key --refresh-keys
 pacman -Sy --noconfirm wget pacman-contrib libnewt archiso nano gzip
+rm ~/.bashrc
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/.bashrc -P ~/
+rm /usr/bin/pkgdown
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pkgdown -P /usr/bin/
 chmod +x /usr/bin/pkgdown
+rm /usr/bin/register2
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/register2 -P /usr/bin/
 chmod +x /usr/bin/register2
 mkdir /arch
@@ -12,6 +15,10 @@ mkdir /iso
 mkdir/arch/temp
 mkdir /arch/scripts
 mkdir /arch/pkgs
+rm /arch/scripts/koffe.is
+rm /arch/scripts/pi.is
+rm /arch/scripts/install
+rm /usr/bin/reregister
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/koffe.is -P /arch/scripts/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/pi.is -P /arch/scripts/
 wget https://raw.githubusercontent.com/KoNickss/koffe/main/install -P /arch/scripts/

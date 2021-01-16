@@ -1,6 +1,5 @@
 #!/bin/bash
 touch /tmp/cll
-echo "" > /tmp/cll
 declare -a programs
 ls /arch/pkgs > /tmp/temporary33
 echo done >> /tmp/temporary33

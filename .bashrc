@@ -22,6 +22,7 @@ list(){
 	ls /arch/pkgs/
 }
 iso-make(){
+	echo "" > /tmp/cll
 	mkdir /usr/share/archiso/configs/releng/airootfs/root/pkg/
 	touch /usr/share/archiso/configs/releng/airootfs/root/install.list
 	rm -rf /usr/share/archiso/configs/releng/airootfs/root/*

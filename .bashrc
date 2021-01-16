@@ -26,6 +26,7 @@ iso-make(){
 	touch /usr/share/archiso/configs/releng/airootfs/root/install.list
 	rm -rf /usr/share/archiso/configs/releng/airootfs/root/*
 	rm -rf /iso/*
+	pacman -Sy
 	reregister
 	pkgdown
 	cp -r /arch/scripts/* /usr/share/archiso/configs/releng/airootfs/root/

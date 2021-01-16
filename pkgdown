@@ -1,4 +1,6 @@
 #!/bin/bash
+touch /tmp/cll
+echo "" > /tmp/cll
 declare -a programs
 ls /arch/pkgs > /tmp/temporary33
 echo done >> /tmp/temporary33
@@ -12,13 +14,14 @@ then
 echo d
 cat /arch/pkgs/$pswap/* > /tmp/tgl
 ls /arch/pkgs/$pswap/ >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-wget -nc -i /tmp/tgl -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+cat /tmp/tgl >> /tmp/cll
 fi
 if [ $(file /arch/pkgs/$pswap | cut -f 2 -d ' ') != directory ];
 then
 echo f
 echo $pswap >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-wget -nc -i /arch/pkgs/$pswap -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+cat /arch/pkgs/$pswap >> /tmp/cll
 fi
 pkgdown
 fi
+wget -nc -i /tmp/cll -P /usr/share/archiso/configs/releng/airootfs/root/pkg/

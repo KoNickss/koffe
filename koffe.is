@@ -39,6 +39,7 @@ bash coms
 whiptail --clear --backtitle "Koffe Offline Arch Installer - made by Konicks(GRI)" --title "Initial setup ready" --msgbox "Well, that was it for the initial setup, now press ok, grab a cup of coffee and wait for linux to install. Be sure to stick around for the post-install configurations tho." 0 0
 #to implement extras file
 pacstrap /mnt - < install.list
+genfstab -U /mnt >> /mnt/etc/fstab
 cp pi.is /mnt/root/
 echo 'bash /root/pi.is' > /mnt/root/.bashrc
 echo 'echo "" > /root/.bashrc' >> /mnt/root/.bashrc

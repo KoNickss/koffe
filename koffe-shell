@@ -1,3 +1,0 @@
-#!/bin/bash
-sudo bash /usr/share/koffe/arch-chroot /usr/share/koffe/archbox
-sudo mv /usr/share/koffe/archbox/out/* ~/. 

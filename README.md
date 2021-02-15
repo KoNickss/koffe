@@ -1,12 +1,12 @@
 # koffe
 # This repo has been moved to https://aur.archlinux.org/koffe after it's release on the aur, clone that if you want to review the package.
 # If you're using another distrbution/MacOS create a chroot system (using the bootstrap image on the arch page), configure the repos, then simply install koffe from the aur either manually or with an aur helper. If you're on windows see if you can find arch in WSL or switch to a better OS.
-# Converting a standard Arch USB to koffe without any other OS (internet required):
+## Converting a standard Arch USB to koffe without any other OS (internet required):
 In the grub boot menu, press tab on the menu entry you want to boot and add `copytoram` at the end of the kernel parameters, boot from that.
 Next, clone the koffe repo from the aur and install it (`git clone https://aur.archlinux.org/koffe ; chown -hR nobody koffe ; cd koffe ; sudo -u nobody makepkg -si`). Generate your iso using koffe (documentation @ koffe --help), then lsblk and identify your arch USB, wipe the file system `wipefs --all /dev/sdX` (make sure you're wiping the entire drive, not just a partition) then burn the koffe iso (`cat /root/*.iso > /dev/sdX`) once again, make sure you're doing it to the whole drive, not just a partition.
 # Introduction
 koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copy-pasting from the iso that could cause issues later.
-#Documentation
+# Documentation
 Flags:
 koffe --pacs=Prog1,Prog2 -----> starts koffe and creates
                                 an iso with the programs Prog1 and Prog2

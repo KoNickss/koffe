@@ -1,5 +1,5 @@
 # koffe
-# This repo has been moved to https://aur.archlinux.org/koffe after it's release on the aur, clone that if you want to review the package.
+
 # If you're using another distrbution/MacOS create a chroot system (using the bootstrap image on the arch page), configure the repos, then simply install koffe from the aur either manually or with an aur helper. If you're on windows see if you can find arch in WSL or switch to a better OS.
 ## Converting a standard Arch USB to koffe without any other OS (internet required):
 In the grub boot menu, press tab on the menu entry you want to boot and add `copytoram` at the end of the kernel parameters, boot from that.

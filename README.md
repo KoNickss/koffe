@@ -29,3 +29,9 @@ Installation is pretty easy, just boot from the iso and type `bash install`, the
 
 # Who is this meant for?
 For anyone in need of offline installers, may be people with wifi driver problems, sys admins with poor internet connections needing to install arch on many systems, etc. The interchangeable scripts and easy to edit nature of koffe make it very easy to turn into a specialized tool that can install arch without any user intervention. In general, it's for the people, use and publish it as you like as long as you respect the license
+
+# A bit about the source code
+Basically koffe is the actual program, install is the live env installation script (includes package installation and partitioning) while pi.is is copied and ran in chroot and handles stuff like timezones and user acounts, you can replace the two installation scripts with any of your choice using the `--scripts` flag
+
+# Making ready to go installers with your exact configurations
+Koffe is not really made for installing vanilla arch quickly as much as it is for installing the EXACT arch you want in minutes, with basic shell scripting skills you can do this yourself, make some custom scripts, include your dotfiles and configurations in the iso (put them in /usr/share/archiso/configs/releng/airootfs/root for easy acces), clone some gits, move some files and have the installation scripts handle compilation and installation, the goal is that when you reboot you will have your workflow there, waiting for you, arch as you picture it

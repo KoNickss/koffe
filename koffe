@@ -88,6 +88,13 @@ then
     pacman -Sp --noconfirm - < /tmp/koffe/n/libnewt > /tmp/koffe/l/libnewt
     echo libnewt >> /usr/share/archiso/configs/releng/airootfs/root/install.list
     wget -nc -i /tmp/koffe/l/libnewt -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+
+	pactree -u -s efibootmgr > /tmp/koffe/n/efibootmgr
+    pacman -Sp --noconfirm - < /tmp/koffe/n/efibootmgr > /tmp/koffe/l/efibootmgr
+    echo efibootmgr >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+    wget -nc -i /tmp/koffe/l/efibootmgr -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+
+
     pactree -u -s grub > /tmp/koffe/n/grub
     pacman -Sp --noconfirm - < /tmp/koffe/n/grub > /tmp/koffe/l/grub
     echo grub >> /usr/share/archiso/configs/releng/airootfs/root/install.list
@@ -99,16 +106,26 @@ then
     fi
     for app in $prog
     do
+		PACAUR=0
         clear
         echo $app
         variable=$(pacman -Sg $app)
         if [[ $variable == '' ]];
         then
             #base
-            pactree -u -s $app > /tmp/koffe/n/$app
-            pacman -Sp --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
-            echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-            wget -nc -i /tmp/koffe/l/$app -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+			aurornot=$(pactree -s -u $app 2>&1 >/dev/null | cut -f 1 -d ':')
+			if [[ $auronnot != "error" ]];
+			then
+            	pactree -u -s $app > /tmp/koffe/n/$app
+            	pacman -Sp --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
+            	echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+            	wget -nc -i /tmp/koffe/l/$app -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+			fi
+			
+			if [[ $aurornot == "error" ]];
+			then
+				PACAUR=1
+			fi
         fi
         if [[ $variable != '' ]];
         then
@@ -125,27 +142,38 @@ then
             pacman -Sp --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
             wget -nc -i /tmp/koffe/grlinks -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
         fi
-        mkdir /tmp/koffe/home
-        sudo usermod -d /tmp/koffe/home/ nobody
-        git clone https://aur.archlinux.org/$app /tmp/koffe/aurbg/$app
-        chown -hR nobody /tmp/koffe/
-        cd /tmp/koffe/aurbg/$app
-        sudo -u nobody makepkg --noconfirm --skippgpcheck
-        cp /tmp/koffe/aurbg/$app/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
-        echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-        declare -a bb
-        bb=$(cat /tmp/koffe/aurbg/$app/.SRCINFO | grep depends | cut -f 2 -d '=' | cut -f 1 -d '>' | cut -f 1 -d '"')
-        for depend in $bb
-        do
-            pactree -u -s $depend > /tmp/koffe/n/$depend
-            pacman -Sp --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
-            wget -nc -i /tmp/koffe/l/$depend -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
-            git clone https://aur.archlinux.org/$depend /tmp/koffe/aurbg/$depend
-            chown -hR nobody /tmp/koffe/$depend
-            cd /tmp/koffe/aurbg/$depend
-            sudo -u nobody makepkg --noconfirm --skippgpcheck
-            cp /tmp/koffe/aurbg/$depend/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
-        done
+		if [[ $PACAUR == 1 ]];
+		then
+			echo "AUR PACKAGE! BEWARE"
+        	mkdir /tmp/koffe/home
+        	sudo usermod -d /tmp/koffe/home/ nobody
+        	git clone https://aur.archlinux.org/$app /tmp/koffe/aurbg/$app
+        	chown -hR nobody /tmp/koffe/
+        	cd /tmp/koffe/aurbg/$app
+        	sudo -u nobody makepkg --noconfirm --skippgpcheck
+        	cp /tmp/koffe/aurbg/$app/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
+        	echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+        	declare -a bb
+        	bb=$(cat /tmp/koffe/aurbg/$app/.SRCINFO | grep depends | cut -f 2 -d '=' | cut -f 1 -d '>' | cut -f 1 -d ':')
+        	for depend in $bb
+        	do
+				aurdep_aur=$(pactree -s -u $depend 2>&1 >/dev/null | cut -f 1 -d ':')
+				if [[ $aurdep_aur != "error" ]];
+				then
+            	pactree -u -s $depend > /tmp/koffe/n/$depend
+            	pacman -Sp --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
+            	wget -nc -i /tmp/koffe/l/$depend -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+				fi
+				if [[ $aurdep_aur == "error" ]];
+				then
+				git clone https://aur.archlinux.org/$depend /tmp/koffe/aurbg/$depend
+            	chown -hR nobody /tmp/koffe/$depend
+            	cd /tmp/koffe/aurbg/$depend
+            	sudo -u nobody makepkg --noconfirm --skippgpcheck
+            	cp /tmp/koffe/aurbg/$depend/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
+				fi
+        	done
+		fi
     done
     repo-add /usr/share/archiso/configs/releng/airootfs/root/pkg/koffe.db.tar.gz /usr/share/archiso/configs/releng/airootfs/root/pkg/*
     mkarchiso -v -w ~/koffeiso -o $pathto/ /usr/share/archiso/configs/releng

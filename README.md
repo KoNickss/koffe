@@ -6,7 +6,7 @@
 `cd koffe`
 `sudo docker build -t koffe .`
 `sudo docker run -v ADRESS_ON_HOST:/etc/koffe-docker/finalimage --rm koffe /usr/bin/koffe --pacs=base,linux`
-## Note: replace ADRESS_ON_HOST with a absolute path on your host, something like `c:\Foo\bar\` on windows or `/foo/bar` on lnx/macOS/bsd
+Note: replace ADRESS_ON_HOST with a absolute path on your host, something like `c:\Foo\bar\` on windows or `/foo/bar` on lnx/macOS/bsd
 # Converting a standard Arch USB to koffe without any other OS (internet required):
 In the grub boot menu, press tab on the menu entry you want to boot and add `copytoram` at the end of the kernel parameters, boot from that.
 Next, clone the koffe repo from the aur and install it (`git clone https://aur.archlinux.org/koffe ; chown -hR nobody koffe ; cd koffe ; sudo -u nobody makepkg -si`). Generate your iso using koffe (documentation @ koffe --help), then lsblk and identify your arch USB, wipe the file system `wipefs --all /dev/sdX` (make sure you're wiping the entire drive, not just a partition) then burn the koffe iso (`cat /root/*.iso > /dev/sdX`) once again, make sure you're doing it to the whole drive, not just a partition.

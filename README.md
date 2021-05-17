@@ -8,7 +8,7 @@ If you're using another distrbution create a chroot system (using the bootstrap 
 
 `sudo docker build -t koffe .`
 
-`sudo docker run -v ADRESS_ON_HOST:/etc/koffe-docker/finalimage --privileged --rm koffe /usr/bin/koffe --pacs=base,linux`
+`sudo docker run --workdir /finalimage -v ADRESS_ON_HOST:/finalimage --privileged --rm koffe /usr/bin/koffe --pacs=base,linux`
 
 Note: replace ADRESS_ON_HOST with a absolute path on your host, something like `c:\\Foo\\bar\\` on windows or `/foo/bar` on lnx/macOS/bsd
 ## Converting a standard Arch USB to koffe without any other OS (internet required):

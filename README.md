@@ -5,7 +5,9 @@ koffe is a great tool for making intuitive, offline archlinux installers. Since 
 # Documentation
 Flags:
 koffe --pacs=Prog1,Prog2 -----> starts koffe and creates
-                                an iso with the programs Prog1 and Prog2
+                                an iso that installs programs Prog1 and Prog2,
+                                You should always include the basic kit of apps
+                                needed for an install (base,linux,grub). EFIBOOTMGR and the lib needed for menus are accounted for by koffe
                                 IMPORTANT: Separate the progs with commas
                                 and do not use spaces
 
@@ -47,3 +49,21 @@ Basically koffe is the actual program, install is the live env installation scri
 
 # Making 'ready to go' installers with your exact configurations
 Koffe is not really made for installing vanilla arch quickly as much as it is for installing the EXACT arch you want in minutes, with basic shell scripting skills you can do this yourself, make some custom scripts, include your dotfiles and configurations in the iso (put them in /usr/share/archiso/configs/releng/airootfs/root for easy acces), clone some gits, move some files and have the installation scripts handle compilation and installation, the goal is that when you reboot you will have your workflow there, waiting for you, arch as you picture it
+
+# PREMADE configs (in order of ammount of apps)
+
+VM command line disk `--pacs=base,linux,grub`
+
+Basic command line server `--pacs=base,linux,linux-firmware,grub`
+
+Fully fleshed out ubuntu-like gnome install `--pacs=base,linux,linux-firmware,base-devel,grub,xorg,gnome,gdm,firefox,code,spotify,discord,minecraft-launcher,yay` (add and remove apps as needed)
+
+
+
+# FAQ
+
+## Why tf did you write the args parsing yourself?
+So people can modify it and add custom args and stuff, editablilty was a main focus in koffe.
+
+## Why is it written in lazy bash?
+So its readable and editable.

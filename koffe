@@ -85,18 +85,18 @@ then
     mkdir ~/out
     rm -rf /var/cache/pacman/pkg/*
     pactree -u -s libnewt > /tmp/koffe/n/libnewt
-    pacman -Sp --noconfirm - < /tmp/koffe/n/libnewt > /tmp/koffe/l/libnewt
+    pacman -Spdd --noconfirm - < /tmp/koffe/n/libnewt > /tmp/koffe/l/libnewt
     echo libnewt >> /usr/share/archiso/configs/releng/airootfs/root/install.list
     wget -nc -i /tmp/koffe/l/libnewt -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
 
 	pactree -u -s efibootmgr > /tmp/koffe/n/efibootmgr
-    pacman -Sp --noconfirm - < /tmp/koffe/n/efibootmgr > /tmp/koffe/l/efibootmgr
+    pacman -Spdd --noconfirm - < /tmp/koffe/n/efibootmgr > /tmp/koffe/l/efibootmgr
     echo efibootmgr >> /usr/share/archiso/configs/releng/airootfs/root/install.list
     wget -nc -i /tmp/koffe/l/efibootmgr -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
 
 
     pactree -u -s grub > /tmp/koffe/n/grub
-    pacman -Sp --noconfirm - < /tmp/koffe/n/grub > /tmp/koffe/l/grub
+    pacman -Spdd --noconfirm - < /tmp/koffe/n/grub > /tmp/koffe/l/grub
     echo grub >> /usr/share/archiso/configs/releng/airootfs/root/install.list
     wget -nc -i /tmp/koffe/l/grub -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
     if [[ x == 1 ]];
@@ -117,7 +117,7 @@ then
 			if [[ $auronnot != "error" ]];
 			then
             	pactree -u -s $app > /tmp/koffe/n/$app
-            	pacman -Sp --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
+            	pacman -Spdd --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
             	echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
             	wget -nc -i /tmp/koffe/l/$app -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
 			fi
@@ -139,7 +139,7 @@ then
                 pactree -s -u $component >> /tmp/koffe/grtree
                 echo $component >> /usr/share/archiso/configs/releng/airootfs/root/install.list
             done
-            pacman -Sp --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
+            pacman -Spdd --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
             wget -nc -i /tmp/koffe/grlinks -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
         fi
 		if [[ $PACAUR == 1 ]];
@@ -159,7 +159,7 @@ then
 				if [[ $aurdep_aur != "error" ]];
 				then
             	pactree -u -s $depend > /tmp/koffe/n/$depend
-            	pacman -Sp --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
+            	pacman -Spdd --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
             	wget -nc -i /tmp/koffe/l/$depend -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
 				fi
 				if [[ $aurdep_aur == "error" ]];

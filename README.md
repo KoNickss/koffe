@@ -1,7 +1,7 @@
 # koffe
 
 # Introduction
-koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copy-pasting from the iso that could cause issues later.
+koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copying packages from the ISO filesystem like other offline installers that could cause issues later, everything is done as is reccommended in the official wiki, !!also remember to regenerate your koffee isos every few weeks to keep on-board packages fresh.
 # Documentation
 Flags:
 koffe --pacs=Prog1,Prog2 -----> starts koffe and creates
@@ -63,7 +63,7 @@ Fully fleshed out ubuntu-like gnome install `--pacs=base,linux,linux-firmware,ba
 # FAQ
 
 ## Why tf did you write the args parsing yourself?
-So people can modify it and add custom args and stuff, editablilty was a main focus in koffe.
+Because I wrote this a while back and I was an idiot and I'm too lazy to edit it in now 
 
-## Why is it written in lazy bash?
-So its readable and editable.
+## Why is it written in bash ffs?
+Because I wrote this a while back and I was an idiot and I'm too lazy to edit it in now 

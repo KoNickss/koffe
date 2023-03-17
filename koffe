@@ -57,7 +57,7 @@ then
             if [[ $(whoami) == root ]];
             then
                 rm -rf ~/koffeiso
-                rm -rf /usr/share/archiso/configs/releng/airootfs/root/*
+                rm -rf /tmp/koffe/rootfs/airootfs/root/*
                 rm -rf /tmp/koffe/
                 exit
             fi
@@ -72,33 +72,34 @@ then
 fi
 if [ $(whoami) == root ];
 then
-    cp $pts/* /usr/share/archiso/configs/releng/airootfs/root/
-    echo '' > /usr/share/archiso/configs/releng/airootfs/root/install.list
-    pacman -Sy
     mkdir /tmp/koffe/
     mkdir /tmp/koffe/l/
     mkdir /tmp/koffe/n/
     mkdir /tmp/koffe/aur/
     mkdir /tmp/koffe/aurbg/
-    mkdir /usr/share/archiso/configs/releng/airootfs/root/pkg/
+	mkdir /tmp/koffe/rootfs/
+	cp -ar /usr/share/archiso/configs/releng/* /tmp/koffe/rootfs/.
+    mkdir /tmp/koffe/rootfs/airootfs/root/pkg/
+    cp $pts/* /tmp/koffe/rootfs/airootfs/root/
+    echo '' > /tmp/koffe/rootfs/airootfs/root/install.list
     mkdir ~/koffeiso
     mkdir ~/out
     rm -rf /var/cache/pacman/pkg/*
     pactree -u -s libnewt > /tmp/koffe/n/libnewt
     pacman -Spdd --noconfirm - < /tmp/koffe/n/libnewt > /tmp/koffe/l/libnewt
-    echo libnewt >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/libnewt -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+    echo libnewt >> /tmp/koffe/rootfs/airootfs/root/install.list
+    wget -nc -i /tmp/koffe/l/libnewt -P /tmp/koffe/rootfs/airootfs/root/pkg/
 
 	pactree -u -s efibootmgr > /tmp/koffe/n/efibootmgr
     pacman -Spdd --noconfirm - < /tmp/koffe/n/efibootmgr > /tmp/koffe/l/efibootmgr
-    echo efibootmgr >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/efibootmgr -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+    echo efibootmgr >> /tmp/koffe/rootfs/airootfs/root/install.list
+    wget -nc -i /tmp/koffe/l/efibootmgr -P /tmp/koffe/rootfs/airootfs/root/pkg/
 
 
     pactree -u -s grub > /tmp/koffe/n/grub
     pacman -Spdd --noconfirm - < /tmp/koffe/n/grub > /tmp/koffe/l/grub
-    echo grub >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/grub -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+    echo grub >> /tmp/koffe/rootfs/airootfs/root/install.list
+    wget -nc -i /tmp/koffe/l/grub -P /tmp/koffe/rootfs/airootfs/root/pkg/
     if [[ x == 1 ]];
     then
         declare -a prog
@@ -118,8 +119,8 @@ then
 			then
             	pactree -u -s $app > /tmp/koffe/n/$app
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
-            	echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
-            	wget -nc -i /tmp/koffe/l/$app -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+            	echo $app >> /tmp/koffe/rootfs/airootfs/root/install.list
+            	wget -nc -i /tmp/koffe/l/$app -P /tmp/koffe/rootfs/airootfs/root/pkg/
 			fi
 			
 			if [[ $aurornot == "error" ]];
@@ -137,10 +138,10 @@ then
             for component in $grlist
             do
                 pactree -s -u $component >> /tmp/koffe/grtree
-                echo $component >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+                echo $component >> /tmp/koffe/rootfs/airootfs/root/install.list
             done
             pacman -Spdd --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
-            wget -nc -i /tmp/koffe/grlinks -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+            wget -nc -i /tmp/koffe/grlinks -P /tmp/koffe/rootfs/airootfs/root/pkg/
         fi
 		if [[ $PACAUR == 1 ]];
 		then
@@ -150,7 +151,7 @@ then
         	git clone https://aur.archlinux.org/$app /tmp/koffe/aurbg/$app
         	chown -hR nobody /tmp/koffe/
         	cd /tmp/koffe/aurbg/$app
-        	echo $app >> /usr/share/archiso/configs/releng/airootfs/root/install.list
+        	echo $app >> /tmp/koffe/rootfs/airootfs/root/install.list
         	declare -a bb
         	bb=$(cat /tmp/koffe/aurbg/$app/.SRCINFO | grep depends | cut -f 2 -d '=' | cut -f 1 -d '>' | cut -f 1 -d ':')
         	for depend in $bb
@@ -160,7 +161,7 @@ then
 				then
             	pactree -u -s $depend > /tmp/koffe/n/$depend
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
-            	wget -nc -i /tmp/koffe/l/$depend -P /usr/share/archiso/configs/releng/airootfs/root/pkg/
+            	wget -nc -i /tmp/koffe/l/$depend -P /tmp/koffe/rootfs/airootfs/root/pkg/
 				fi
 				if [[ $aurdep_aur == "error" ]];
 				then
@@ -168,7 +169,7 @@ then
             	chown -hR nobody /tmp/koffe/$depend
             	cd /tmp/koffe/aurbg/$depend
             	sudo -u nobody makepkg --noconfirm --skippgpcheck
-            	cp /tmp/koffe/aurbg/$depend/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
+            	cp /tmp/koffe/aurbg/$depend/*.pkg.tar.zst /tmp/koffe/rootfs/airootfs/root/pkg
 				fi
         	done
 			declare -a bbm
@@ -178,13 +179,14 @@ then
 				pacman -S $depend --noconfirm
 			done
 			sudo -u nobody makepkg --noconfirm --skippgpcheck
-        	cp /tmp/koffe/aurbg/$app/*.pkg.tar.zst /usr/share/archiso/configs/releng/airootfs/root/pkg
+        	cp /tmp/koffe/aurbg/$app/*.pkg.tar.zst /tmp/koffe/rootfs/airootfs/root/pkg
 		fi
     done
-    repo-add /usr/share/archiso/configs/releng/airootfs/root/pkg/koffe.db.tar.gz /usr/share/archiso/configs/releng/airootfs/root/pkg/*
-    mkarchiso -v -w ~/koffeiso -o $pathto/ /usr/share/archiso/configs/releng
+    repo-add /tmp/koffe/rootfs/airootfs/root/pkg/koffe.db.tar.gz /tmp/koffe/rootfs/airootfs/root/pkg/*
+	echo "bash ~/install" > /tmp/koffe/rootfs/airootfs/root/.zshrc
+    mkarchiso -v -w ~/koffeiso -o $pathto/ /tmp/koffe/rootfs/
     rm -rf ~/koffeiso
-    rm -rf /usr/share/archiso/configs/releng/airootfs/root/*
+    rm -rf /tmp/koffe/rootfs//airootfs/root/*
     rm -rf /tmp/koffe/
 fi
       

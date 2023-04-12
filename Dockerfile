@@ -8,4 +8,5 @@ COPY install /usr/share/koffe/install
 RUN chmod +x /usr/bin/koffe
 RUN pacman -Suy --noconfirm
 RUN pacman -S sudo base archiso pacman-contrib libnewt wget git --noconfirm
+WORKDIR /finalimage
 ENTRYPOINT ["/usr/bin/koffe"]

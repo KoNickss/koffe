@@ -39,7 +39,7 @@ If you're using another distrbution create a chroot system (using the bootstrap 
 
 (if prompted to import or update pgp keys, that means your docker archlinux img is heavily out of date, run `docker pull archlinux` to fix it.
 
-`sudo docker run /finalimage -v $PWD:/finalimage --privileged --rm koffe --pacs=base,linux`
+`sudo docker run -v $PWD:/finalimage --privileged --rm koffe --pacs=base,linux`
 
 Note: On Windows, replace $PWD with an absolute path on your host, something like `c:\\Foo\\bar\\`
 ## Converting a standard Arch USB to koffe without any other OS (internet required):

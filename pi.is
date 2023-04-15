@@ -33,7 +33,7 @@ echo "$myhostname" > /etc/hostname
 archit=$(whiptail --backtitle "Koffe" --title "Architecture selector" --menu "Choose the bit count of your x86 chip" 0 0 4 \
     64 "BIT" \
     32 "BIT" 3>&1 1>&2 2>&3 3>&-)
-    efiornot=$(whiptail --backtitle "Koffe" --title "Boot selector" --menu "Is your soon-to-be-arch computer legacy or EUFI?" 0 0 4 \
+    efiornot=$(whiptail --backtitle "Koffe" --title "Boot selector" --menu "Is your soon-to-be-arch computer legacy or UEFI?" 0 0 4 \
         1 "Bios/Legacy" \
         2 "UEFI" 3>&1 1>&2 2>&3 3>&-)
     if [[ "$efiornot" == "2" ]]

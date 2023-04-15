@@ -62,8 +62,6 @@ archit=$(whiptail --backtitle "Koffe" --title "Architecture selector" --menu "Ch
     	grub-mkconfig -o /boot/grub/grub.cfg
    	fi
 clear
-echo Now choose a root password
-passwd
 myusername1=$(whiptail --inputbox "Now lets create a user, pick a username: " 0 0 4 3>&1 1>&2 2>&3 3>&-)
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 useradd -m -G wheel $myusername1

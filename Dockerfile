@@ -1,4 +1,5 @@
 FROM archlinux
+ENV TERM='xterm'
 RUN install -d /usr/bin/
 RUN install -d /usr/share/koffe
 RUN install -d /finalimage

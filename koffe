@@ -1,43 +1,38 @@
 #!/bin/bash
 x=1
 pts=/usr/share/koffe/
-pathto=$(realpath ./)
+pathto=$PWD
+optdep=0
+pactree_command="pactree -su "
 if [ $1 ]; 
 then
     for argument in $@
     do
         if [[ $argument == "--help" ]];
         then
-            echo "koffe is a tool for making simple and intuitive offline archlinux installers" 
-            echo "with support for most packages, package groups or aur packages."
-            echo
-            echo "The programs you select are the only ones getting installed" 
-            echo "(and the dependencies, of course), so make sure to include packages that are needed for a" 
-            echo "healthy arch install. So smthng like "
-            echo "'koffe --pacs=base,linux,linux-firmware,sudo,grub,xorg,gnome,minecraft-launcher,code,yay'" 
-            echo "and any other packages you want to install," 
-            echo "you can also use whatever WM or DE you want, just keep in mind if the greeter is anything" 
-            echo "other than gdm, sddm or lightdm you need to enable it yourself. Also, if you're" 
-            echo "making an archiso to be used on many computers and include multiple sets of drivers," 
-            echo "in the live disk you can edit 'install.list' to manage what programs to install"
-            echo
-            echo "Once you're done with the iso, to install arch just boot from it and do 'bash install'"
-            echo ---------------------------------------------------
-            echo 
-            echo Flags:
-            echo "koffe --pacs=Prog1,Prog2 -----> starts koffe and creates" 
+            echo "koffe is a tool for making simple and intuitive offline archlinux installer iso's" 
+        	echo 
+			echo "koffe [options] <out folder>"
+			echo 
+            echo "Flags:"
+			echo
+            echo "	koffe --pacs=Prog1,Prog2  --> starts koffe and creates" 
             echo "                                an iso with the programs Prog1 and Prog2"
             echo "                                IMPORTANT: Separate the progs with commas"
             echo "                                and do not use spaces"
             echo
-            echo "koffe --clean ----------------> cleans building dirs after unexpected" 
+            echo "	koffe --clean             --> cleans building dirs after unexpected" 
             echo "                                exit or unsuccesful iso generation. Will"
             echo "                                nullify any other args parsed with it and will"
             echo "                                not create an iso"
             echo
-            echo "koffe --scripts=/path/path/ --> copies the scripts in the specified path"
+            echo "	koffe --scripts=/foo/bar  --> copies the scripts in the specified path"
             echo "                                and uses them instead of the default koffe"
             echo "                                scripts in /usr/share/koffe/. Avoid paths with spaces"
+			echo
+			echo "	koffe --opt               --> Also downloads optional dependencies for packages"
+			echo "                                Use for a more complete installation."
+			echo
             exit
         fi
         if [[ $(echo $argument | cut -f 1 -d '=') == "--pacs" ]];
@@ -56,12 +51,17 @@ then
         then
             if [[ $(whoami) == root ]];
             then
-                rm -rf ~/koffeiso
+                rm -rf /tmp/koffe_workdir
                 rm -rf /tmp/koffe/rootfs/airootfs/root/*
                 rm -rf /tmp/koffe/
                 exit
             fi
         fi
+		if [[ $argument == "--opt" ]];
+		then
+			optdep=1
+			pactree_command="pactree -suo "
+		fi
     done
 fi
 if [ $(whoami) != root ];
@@ -70,6 +70,20 @@ then
     echo WARNING: the program needs to be ran as root
     echo $prog
 fi
+
+for lastarg; do :; done
+#GET LAST ARG ^^
+
+if [[ $lastarg == -* ]];
+then
+	#argument, no outfile, use PWD
+	pathto=$PWD
+else
+	#outfile
+	pathto=$(realpath $lastarg)
+fi
+
+
 if [ $(whoami) == root ];
 then
     mkdir /tmp/koffe/
@@ -82,29 +96,16 @@ then
     mkdir /tmp/koffe/rootfs/airootfs/root/pkg/
     cp $pts/* /tmp/koffe/rootfs/airootfs/root/
     echo '' > /tmp/koffe/rootfs/airootfs/root/install.list
-    mkdir ~/koffeiso
+    mkdir /tmp/koffe_workdir
     mkdir ~/out
     rm -rf /var/cache/pacman/pkg/*
-    pactree -u -s libnewt > /tmp/koffe/n/libnewt
-    pacman -Spdd --noconfirm - < /tmp/koffe/n/libnewt > /tmp/koffe/l/libnewt
-    echo libnewt >> /tmp/koffe/rootfs/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/libnewt -P /tmp/koffe/rootfs/airootfs/root/pkg/
 
-	pactree -u -s efibootmgr > /tmp/koffe/n/efibootmgr
-    pacman -Spdd --noconfirm - < /tmp/koffe/n/efibootmgr > /tmp/koffe/l/efibootmgr
-    echo efibootmgr >> /tmp/koffe/rootfs/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/efibootmgr -P /tmp/koffe/rootfs/airootfs/root/pkg/
-
-
-    pactree -u -s grub > /tmp/koffe/n/grub
-    pacman -Spdd --noconfirm - < /tmp/koffe/n/grub > /tmp/koffe/l/grub
-    echo grub >> /tmp/koffe/rootfs/airootfs/root/install.list
-    wget -nc -i /tmp/koffe/l/grub -P /tmp/koffe/rootfs/airootfs/root/pkg/
-    if [[ x == 1 ]];
+	if [[ x == 1 ]];
     then
         declare -a prog
         prog=$(whiptail --inputbox "Please enter all the programs to be included in the installer separated by a space, you can also include package groups like gnome or xorg or AUR packages" 0 0 4 3>&1 1>&2 2>&3 3>&-)
     fi
+	prog="$prog libnewt"
     for app in $prog
     do
 		PACAUR=0
@@ -113,11 +114,11 @@ then
         variable=$(pacman -Sg $app)
         if [[ $variable == '' ]];
         then
-            #base
-			aurornot=$(pactree -s -u $app 2>&1 >/dev/null | cut -f 1 -d ':')
+            #simple package ex:base
+			aurornot=$($pactree_command $app 2>&1 >/dev/null | cut -f 1 -d ':')
 			if [[ $auronnot != "error" ]];
 			then
-            	pactree -u -s $app > /tmp/koffe/n/$app
+			    $pactree_command $app > /tmp/koffe/n/$app
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
             	echo $app >> /tmp/koffe/rootfs/airootfs/root/install.list
             	wget -nc -i /tmp/koffe/l/$app -P /tmp/koffe/rootfs/airootfs/root/pkg/
@@ -130,14 +131,14 @@ then
         fi
         if [[ $variable != '' ]];
         then
-            #gnome
+            #group package ex:gnome
             pacman -Sg $app > /tmp/koffe/generaltemp
             cut -f 2- -d ' ' /tmp/koffe/generaltemp > /tmp/koffe/grlist
             grlist=$(cat /tmp/koffe/grlist)
             echo '' > /tmp/koffe/grtree
             for component in $grlist
             do
-                pactree -s -u $component >> /tmp/koffe/grtree
+                $pactree_command $component >> /tmp/koffe/grtree
                 echo $component >> /tmp/koffe/rootfs/airootfs/root/install.list
             done
             pacman -Spdd --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
@@ -156,10 +157,11 @@ then
         	bb=$(cat /tmp/koffe/aurbg/$app/.SRCINFO | grep depends | cut -f 2 -d '=' | cut -f 1 -d '>' | cut -f 1 -d ':')
         	for depend in $bb
         	do
-				aurdep_aur=$(pactree -s -u $depend 2>&1 >/dev/null | cut -f 1 -d ':')
+				aurdep_aur=$($pactree_command $depend 2>&1 >/dev/null | cut -f 1 -d ':')
+				
 				if [[ $aurdep_aur != "error" ]];
 				then
-            	pactree -u -s $depend > /tmp/koffe/n/$depend
+            	$pactree_command $depend > /tmp/koffe/n/$depend
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
             	wget -nc -i /tmp/koffe/l/$depend -P /tmp/koffe/rootfs/airootfs/root/pkg/
 				fi
@@ -184,8 +186,8 @@ then
     done
     repo-add /tmp/koffe/rootfs/airootfs/root/pkg/koffe.db.tar.gz /tmp/koffe/rootfs/airootfs/root/pkg/*
 	echo "bash ~/install" > /tmp/koffe/rootfs/airootfs/root/.zshrc
-    mkarchiso -v -w ~/koffeiso -o $pathto/ /tmp/koffe/rootfs/
-    rm -rf ~/koffeiso
+    mkarchiso -v -w /tmp/koffe_workdir -o $pathto /tmp/koffe/rootfs/
+    rm -rf /tmp/koffe_workdir
     rm -rf /tmp/koffe/rootfs//airootfs/root/*
     rm -rf /tmp/koffe/
 fi

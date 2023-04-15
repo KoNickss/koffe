@@ -3,24 +3,30 @@
 # Introduction
 koffe is a great tool for making intuitive, offline archlinux installers. Since some steps for mastering an arch iso require arch-linux, everything runs inside a container you have to create yourself. Every package installed to the new computer via the installer are from the repo, including base and linux, so no copying packages from the ISO filesystem like other offline installers that could cause issues later, everything is done as is reccommended in the official wiki, !!also remember to regenerate your koffee isos every few weeks to keep on-board packages fresh.
 # Documentation
+```
+koffe is a tool for making simple and intuitive offline archlinux installer iso's
+
+koffe [options] <out folder>
+
 Flags:
-koffe --pacs=Prog1,Prog2 -----> starts koffe and creates
-                                an iso that installs programs Prog1 and Prog2,
-                                You should always include the basic kit of apps
-                                needed for an install (base,linux,grub). EFIBOOTMGR and the lib needed for menus are accounted for by koffe
+
+	koffe --pacs=Prog1,Prog2  --> starts koffe and creates
+                                an iso with the programs Prog1 and Prog2
                                 IMPORTANT: Separate the progs with commas
                                 and do not use spaces
 
-koffe --clean ----------------> cleans building dirs after unexpected
+	koffe --clean             --> cleans building dirs after unexpected
                                 exit or unsuccesful iso generation. Will
                                 nullify any other args parsed with it and will
                                 not create an iso
 
-koffe --scripts=/path/path/ --> copies the scripts in the specified path
+	koffe --scripts=/foo/bar  --> copies the scripts in the specified path
                                 and uses them instead of the default koffe
                                 scripts in /usr/share/koffe/. Avoid paths with spaces
 
-
+	koffe --opt               --> Also downloads optional dependencies for packages
+                                Use for a more complete installation.
+```
 # Installation
 Installation is pretty easy, just boot from the iso and type `bash install`, the installer will do everything for you.
 
@@ -42,7 +48,7 @@ If you're using another distrbution create a chroot system (using the bootstrap 
 
 `sudo docker build -t koffe .`
 
-(if prompted to import or update pgp keys, that means your docker archlinux img is heavily out of date, run `docker pull archlinux` to fix it.
+(if prompted to import or update pgp keys, that means your docker archlinux img is heavily out of date, run `docker pull archlinux` to fix it.)
 
 ## Then to run it:
 
@@ -63,9 +69,9 @@ Koffe is not really made for installing vanilla arch quickly as much as it is fo
 
 VM command line disk `--pacs=base,linux,grub`
 
-Basic command line server `--pacs=base,linux,linux-firmware,grub`
+Basic command line server `--pacs=base,linux,linux-firmware,grub,efibootmgr`
 
-Fully fleshed out ubuntu-like gnome install `--pacs=base,linux,linux-firmware,base-devel,grub,xorg,gnome,gdm,firefox,code,spotify,discord,minecraft-launcher,yay` (add and remove apps as needed)
+Fully fleshed out ubuntu-like gnome install `--opt --pacs=base,linux,linux-firmware,base-devel,grub,efibootmgr,xorg,gnome,gdm,firefox,code,spotify,discord,minecraft-launcher,yay` (add and remove apps as needed)
 
 
 

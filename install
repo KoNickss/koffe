@@ -49,5 +49,9 @@ echo 'echo "" > /root/.bashrc' >> /mnt/root/.bashrc
 arch-chroot /mnt
 whiptail --clear --backtitle "Koffe Offline Arch Installer - made by Konicks(GRI)" --title "Goodbye screen" --msgbox "Well, that was everything. Use reboot or poweroff to exit" 0 0
 umount -a
-clear
-echo "use poweroff or reboot to exit"
+
+if (whiptail --title "Koffe Finished" --yesno "Installation Finished, do you want to reboot?" 8 78); then
+    reboot
+else
+    exit
+fi

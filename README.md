@@ -30,12 +30,18 @@ For anyone in need of offline installers, may be people with wifi driver problem
 
 # Making a koffe disk
 If you're using another distrbution create a chroot system (using the bootstrap image on the arch page), configure the repos, then simply install koffe from the aur either manually or with an aur helper. If you're on windows see if you can find arch in WSL or switch to a better OS.
-# DOCKER INSTALLATION (for windows, macOS, non-arch linux, BSD)
+
+# Docker Installation 
+## (for windows, macOS, non-arch linux, BSD)
 
 `docker pull archlinux`
+
 `git clone https://github.com/konickss/koffe`
+
 `cd koffe`
+
 `sudo docker build -t koffe .`
+
 (if prompted to import or update pgp keys, that means your docker archlinux img is heavily out of date, run `docker pull archlinux` to fix it.
 
 ## Then to run it:

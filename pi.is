@@ -1,3 +1,4 @@
+#!/bin/sh
 systemctl enable NetworkManager
 systemctl enable sddm.service
 systemctl enable gdm.service
@@ -39,12 +40,14 @@ archit=$(whiptail --backtitle "Koffe" --title "Architecture selector" --menu "Ch
     then
     if [[ "$archit" == "64" ]]
     then
-        grub-install --target=x86_64-efi --efi-directory=/boot
+        mkdir /boot/EFI
+        grub-install --target=x86_64-efi --efi-directory=/boot/EFI
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
     if [[ "$archit" == "32" ]]
     then
-        grub-install --target=i386-efi --efi-directory=/boot
+        mkdir /boot/EFI
+        grub-install --target=i386-efi --efi-directory=/boot/EFI
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
     fi

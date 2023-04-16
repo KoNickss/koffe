@@ -48,11 +48,7 @@ cp pi.is /mnt/root/
 echo 'bash /root/pi.is' > /mnt/root/.bashrc
 echo 'echo "" > /root/.bashrc' >> /mnt/root/.bashrc
 arch-chroot /mnt
-whiptail --clear --backtitle "Koffe Offline Arch Installer - made by Konicks(GRI)" --title "Goodbye screen" --msgbox "Well, that was everything. Use reboot or poweroff to exit" 0 0
 umount -a
 
-if (whiptail --title "Koffe Finished" --yesno "Installation Finished, do you want to reboot?" 8 78); then
-    reboot
-else
-    exit
-fi
+ersp=$(whiptail --title "Installation Finished" --menu "Installation Finished. Do you want to exit to terminal OR poweroff and boot into arch?" 19 74 10 "exit" "and enter a terminal" "poweroff" "and boot into arch" 3>&1 1>&2 2>&3 3>&-)
+$ersp

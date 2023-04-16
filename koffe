@@ -121,6 +121,13 @@ then
 			    $pactree_command $app > /tmp/koffe/n/$app
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$app > /tmp/koffe/l/$app
             	echo $app >> /tmp/koffe/rootfs/airootfs/root/install.list
+				if [[ $optdep == 1 ]];
+				then
+					#ADD OPTIONAL DEPS TO INSTALL LIST
+					pactree -suo $app > /tmp/koffe/with_opt
+					pactree -su $app > /tmp/koffe/wout_opt
+					grep -Fxvf /tmp/koffe/wout_opt /tmp/koffe/with_opt >> /tmp/koffe/rootfs/airootfs/root/install.list
+				fi
             	wget -nc -i /tmp/koffe/l/$app -P /tmp/koffe/rootfs/airootfs/root/pkg/
 			fi
 			
@@ -140,6 +147,14 @@ then
             do
                 $pactree_command $component >> /tmp/koffe/grtree
                 echo $component >> /tmp/koffe/rootfs/airootfs/root/install.list
+				if [[ $optdep == 1 ]];
+				then
+					#ADD OPTIONAL DEPS TO INSTALL LIST
+					pactree -suo $component > /tmp/koffe/with_opt
+					pactree -su $component > /tmp/koffe/wout_opt
+					grep -Fxvf /tmp/koffe/wout_opt /tmp/koffe/with_opt >> /tmp/koffe/rootfs/airootfs/root/install.list
+				fi
+
             done
             pacman -Spdd --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
             wget -nc -i /tmp/koffe/grlinks -P /tmp/koffe/rootfs/airootfs/root/pkg/
@@ -161,7 +176,7 @@ then
 				
 				if [[ $aurdep_aur != "error" ]];
 				then
-            	$pactree_command $depend > /tmp/koffe/n/$depend
+            	pactree -su $depend > /tmp/koffe/n/$depend
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
             	wget -nc -i /tmp/koffe/l/$depend -P /tmp/koffe/rootfs/airootfs/root/pkg/
 				fi

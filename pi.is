@@ -41,13 +41,13 @@ archit=$(whiptail --backtitle "Koffe" --title "Architecture selector" --menu "Ch
     if [[ "$archit" == "64" ]]
     then
         mkdir /boot/EFI
-        grub-install --target=x86_64-efi --efi-directory=/boot/EFI
+        grub-install --target=x86_64-efi --efi-directory=/boot/
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
     if [[ "$archit" == "32" ]]
     then
         mkdir /boot/EFI
-        grub-install --target=i386-efi --efi-directory=/boot/EFI
+        grub-install --target=i386-efi --efi-directory=/boot/
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
     fi

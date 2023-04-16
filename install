@@ -30,9 +30,8 @@ mkswap /dev/$pswap
 swapon /dev/$pswap
 pefi=$(whiptail --title "Select the partiton to install EFI to:" --menu "Select the partiton to install EFI to (no disk if you have legacy bios):" 16 78 10 "${parts[@]}" 3>&1 1>&2 2>&3 3>&-)
 mkdir /mnt/boot
-mkdir /mnt/boot/EFI
 mkfs.fat -F32 /dev/$pefi
-mount /dev/$pefi /mnt/boot/EFI
+mount /dev/$pefi /mnt/boot/
 extraparts=$(whiptail --inputbox "If you want to mount any other partition manually, enter the commands here like this: command 1 ; command 2 ; command 3" 0 0 0 3>&1 1>&2 2>&3 3>&-)
 echo $extraparts > coms
 bash coms

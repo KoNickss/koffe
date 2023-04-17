@@ -10,6 +10,8 @@ koffe [options] <out folder>
 
 Flags:
 
+	koffe -v                  --> verbose output
+
 	koffe --pacs=Prog1,Prog2  --> starts koffe and creates
                                 an iso with the programs Prog1 and Prog2
                                 IMPORTANT: Separate the progs with commas

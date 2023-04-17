@@ -38,7 +38,7 @@ then
 			echo 
             echo "Flags:"
 			echo
-			echo "	koofe -v				  --> verbose output"
+			echo "	koffe -v                  --> verbose output"
 			echo
             echo "	koffe --pacs=Prog1,Prog2  --> starts koffe and creates" 
             echo "                                an iso with the programs Prog1 and Prog2"

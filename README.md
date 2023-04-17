@@ -52,7 +52,7 @@ If you're using another distrbution create a chroot system (using the bootstrap 
 
 ## Then to run it:
 
-`docker run -v $PWD:/finalimage --privileged --rm koffe --pacs=base,linux`
+`docker run -t -v $PWD:/finalimage --privileged --rm koffe --pacs=base,linux`
 
 Note: On Windows, replace $PWD with an absolute path on your host, something like `c:\\Foo\\bar\\`
 # Converting a standard Arch USB to koffe without any other OS (internet required):

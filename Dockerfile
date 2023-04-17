@@ -1,5 +1,5 @@
 FROM archlinux
-ENV TERM='xterm'
+ENV TERM='xterm-256color'
 RUN install -d /usr/bin/
 RUN install -d /usr/share/koffe
 RUN install -d /finalimage

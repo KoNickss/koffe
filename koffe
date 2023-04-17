@@ -2,8 +2,30 @@
 x=1
 pts=/usr/share/koffe/
 pathto=$PWD
+reset="\e[0m"
+green="\e[0;32m"
 optdep=0
+quiet=0
 pactree_command="pactree -su "
+pacout=/dev/stdout
+clearcomm='clear ; outapp'
+wgetargs="-q --show-progress"
+quiet_flag="-q"
+verbose_flag=""
+outapp(){
+	for outapp in $prog
+	do
+		if [[ $outapp == $app ]];
+		then
+			echo -ne "${green}$outapp${reset} "
+		else
+			echo -ne "$outapp "
+		fi
+	done
+	echo
+	echo ">-------------------------------------------------<"
+	echo
+}
 if [ $1 ]; 
 then
     for argument in $@
@@ -15,6 +37,8 @@ then
 			echo "koffe [options] <out folder>"
 			echo 
             echo "Flags:"
+			echo
+			echo "	koffe -v                  --> verbose output"
 			echo
             echo "	koffe --pacs=Prog1,Prog2  --> starts koffe and creates" 
             echo "                                an iso with the programs Prog1 and Prog2"
@@ -62,6 +86,16 @@ then
 			optdep=1
 			pactree_command="pactree -suo "
 		fi
+		if [[ $argument == "-v" ]];
+		then
+			verbose=1
+			pacout=/dev/stdout
+			clearcomm="echo"
+			wgetargs=""
+			quiet_flag=""
+			verbose_flag="-v"
+		fi
+
     done
 fi
 if [ $(whoami) != root ];
@@ -87,7 +121,9 @@ fi
 if [ $(whoami) == root ];
 then
 	#updating the database is required for pacman to resolve the latest links to packages
-	pacman -Suy
+	echo "Running 'pacman -Syu'"
+	pacman -Suy > $pacoutput
+	clear
     mkdir /tmp/koffe/
     mkdir /tmp/koffe/l/
     mkdir /tmp/koffe/n/
@@ -108,11 +144,13 @@ then
         prog=$(whiptail --inputbox "Please enter all the programs to be included in the installer separated by a space, you can also include package groups like gnome or xorg or AUR packages" 0 0 4 3>&1 1>&2 2>&3 3>&-)
     fi
 	prog="$prog libnewt"
+
+
     for app in $prog
     do
+		clear
+		outapp
 		PACAUR=0
-        clear
-        echo $app
         variable=$(pacman -Sg $app)
         if [[ $variable == '' ]];
         then
@@ -130,7 +168,8 @@ then
 					pactree -su $app > /tmp/koffe/wout_opt
 					prog="$prog $(grep -Fxvf /tmp/koffe/wout_opt /tmp/koffe/with_opt | cut -d ':' -f 1 | cut -d '>' -f 1 | tr '\n' ' ')"
 				fi
-            	wget -nc -i /tmp/koffe/l/$app -P /tmp/koffe/rootfs/airootfs/root/pkg/
+            	wget $wgetargs -nc -i /tmp/koffe/l/$app -P /tmp/koffe/rootfs/airootfs/root/pkg/
+				$clearcomm
 			fi
 			
 			if [[ $aurornot == "error" ]];
@@ -159,7 +198,8 @@ then
 		
             done
             pacman -Spdd --noconfirm - < /tmp/koffe/grtree > /tmp/koffe/grlinks
-            wget -nc -i /tmp/koffe/grlinks -P /tmp/koffe/rootfs/airootfs/root/pkg/
+            wget $wgetargs -nc -i /tmp/koffe/grlinks -P /tmp/koffe/rootfs/airootfs/root/pkg/
+			$clearcomm
         fi
 		if [[ $PACAUR == 1 ]];
 		then
@@ -180,7 +220,8 @@ then
 				then
             	pactree -su $depend > /tmp/koffe/n/$depend
             	pacman -Spdd --noconfirm - < /tmp/koffe/n/$depend > /tmp/koffe/l/$depend
-            	wget -nc -i /tmp/koffe/l/$depend -P /tmp/koffe/rootfs/airootfs/root/pkg/
+            	wget $wgetargs -nc -i /tmp/koffe/l/$depend -P /tmp/koffe/rootfs/airootfs/root/pkg/
+				$clearcomm
 				fi
 				if [[ $aurdep_aur == "error" ]];
 				then
@@ -189,23 +230,36 @@ then
             	cd /tmp/koffe/aurbg/$depend
             	sudo -u nobody makepkg --noconfirm --skippgpcheck
             	cp /tmp/koffe/aurbg/$depend/*.pkg.tar.zst /tmp/koffe/rootfs/airootfs/root/pkg
+				$clearcomm
 				fi
         	done
 			declare -a bbm
         	bbm=$(cat /tmp/koffe/aurbg/$app/.SRCINFO | grep makedepends | cut -f 2 -d '=' | cut -f 1 -d '>' | cut -f 1 -d ':')
         	for depend in $bbm
         	do
-				pacman -S $depend --noconfirm
+				echo "--> Install $depend (needed to build the AUR package)?"
+				pacman -S $depend --noconfirm > $pacout
 			done
-			sudo -u nobody makepkg --noconfirm --skippgpcheck
+			sudo -u nobody makepkg --noconfirm --skippgpcheck > $pacout
         	cp /tmp/koffe/aurbg/$app/*.pkg.tar.zst /tmp/koffe/rootfs/airootfs/root/pkg
 		fi
     done
-    repo-add /tmp/koffe/rootfs/airootfs/root/pkg/koffe.db.tar.gz /tmp/koffe/rootfs/airootfs/root/pkg/*
+	clear
+	echo -e "${green}-->${reset} Building REPO image"
+    repo-add $quiet_flag /tmp/koffe/rootfs/airootfs/root/pkg/koffe.db.tar.gz /tmp/koffe/rootfs/airootfs/root/pkg/* > $pacout
+	echo "Done!"
+	echo
 	echo "bash ~/install" > /tmp/koffe/rootfs/airootfs/root/.zshrc
-    mkarchiso -v -w /tmp/koffe_workdir -o $pathto /tmp/koffe/rootfs/
+	echo -e "${green}-->${reset} Making ISO image (might take a while)"
+    mkarchiso $verbose_flag -L "koffe" -w /tmp/koffe_workdir -o $pathto /tmp/koffe/rootfs/ 2>&1 1>$pacout
+	echo "Done!"
+	echo
+	echo "--> Cleaning up"
     rm -rf /tmp/koffe_workdir
     rm -rf /tmp/koffe/rootfs//airootfs/root/*
     rm -rf /tmp/koffe/
+	echo "Done!"
+	echo
+	echo "quit"
 fi
       

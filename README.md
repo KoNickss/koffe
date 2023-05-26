@@ -42,15 +42,7 @@ If you're using another distrbution create a chroot system (using the bootstrap 
 # Docker Installation 
 ## (for windows, macOS, non-arch linux, BSD)
 
-`docker pull archlinux`
-
-`git clone https://github.com/konickss/koffe`
-
-`cd koffe`
-
-`sudo docker build -t koffe .`
-
-(if prompted to import or update pgp keys, that means your docker archlinux img is heavily out of date, run `docker pull archlinux` to fix it.)
+`docker pull konicks/koffe`
 
 ## Then to run it:
 
